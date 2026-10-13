@@ -126,7 +126,6 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 .big-stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--accent),#5b3fd6);color:#fff;padding:12px 22px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 30px rgba(124,92,255,.5);transition:.35s;z-index:200;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
-
 .proj-card{background:linear-gradient(135deg,#1f2a5e,#14182e);border:1px solid rgba(61,220,151,.35)}
 .proj-card.work{border-color:rgba(255,200,87,.4)}
 .proj-card.rest{border-color:rgba(66,211,255,.35)}
@@ -150,14 +149,12 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 .proj-step-checks b{opacity:.85}
 .proj-rest-msg{text-align:center;padding:18px 10px;color:var(--muted);font-size:13px}
 .proj-rest-msg .emoji{font-size:28px;display:block;margin-bottom:6px}
-
 .proj-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px}
 .proj-item.active{border-color:var(--green);background:rgba(61,220,151,.05)}
 .proj-item-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .proj-item-title{font-weight:700;font-size:14px}
 .proj-item-meta{font-size:11px;color:var(--muted);margin-top:3px}
 .proj-item-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-
 .step-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
 .step-slot{padding:8px 4px;text-align:center;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:3px;min-height:52px;justify-content:center;overflow:hidden;position:relative}
 .step-slot:hover:not(.done):not(.active){border-color:var(--accent);background:rgba(124,92,255,.15);transform:scale(1.04)}
@@ -168,7 +165,6 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 .step-slot.done::before{content:'✓';font-size:9px;position:absolute;top:2px;right:4px}
 .step-slot.active{background:linear-gradient(135deg,var(--gold),#ff9f43);color:#0d1020;border-color:var(--gold);box-shadow:0 0 12px rgba(255,200,87,.4)}
 .step-slot.active .t{color:rgba(13,16,32,.7)}
-
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:.25s;z-index:200;backdrop-filter:blur(4px)}
 .modal-backdrop.show{opacity:1;pointer-events:auto}
 .modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.94);width:min(92vw,560px);max-height:85vh;background:linear-gradient(180deg,#1a1f38,#131629);border:1px solid var(--border);border-radius:20px;z-index:210;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 20px 60px rgba(0,0,0,.7)}
@@ -179,14 +175,12 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 .modal-close{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.06);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;flex:none}
 .modal-body{overflow-y:auto;padding:16px 20px;flex:1;overscroll-behavior:contain}
 .modal-foot{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-
 .titles-list{display:flex;flex-direction:column;gap:6px}
 .titles-row{display:flex;align-items:center;gap:8px}
 .titles-row .num{min-width:34px;text-align:right;font-size:12px;font-weight:700;color:var(--muted)}
 .titles-row input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:9px 11px;font-size:13px;outline:none;transition:.18s}
 .titles-row input:focus{border-color:var(--accent);background:rgba(124,92,255,.1)}
 .titles-row input.filled{border-color:rgba(61,220,151,.3);background:rgba(61,220,151,.05)}
-
 @media(max-width:520px){
   .stat{min-width:66px;padding:6px 8px}.stat b{font-size:14px}.proj-day{font-size:26px}
   .step-grid{grid-template-columns:repeat(auto-fill,minmax(56px,1fr))}
@@ -249,7 +243,7 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 
 <button class="fab" id="fabDecks">
   <span class="fab-icon">📦</span>
-  <span>Колоды</span>
+  <span>Дела</span>
   <span class="fab-count" id="fabCount">0</span>
 </button>
 
@@ -288,17 +282,9 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 <div class="toast" id="toast"></div>
 
 <script>
-/* =========================================================
-   ВЕРСИЯ И РЕПОЗИТОРИЙ (для проверки обновлений)
-   ========================================================= */
-const APP_VERSION = '1.0.1';
+const APP_VERSION = '1.0.2';
 const GITHUB_REPO = 'denispan88-svg/DayQuest';
 
-/* =========================================================
-   ХРАНИЛИЩЕ — работает и в браузере, и в APK
-   В браузере → localStorage
-   В APK (Capacitor) → нативные Preferences
-   ========================================================= */
 const Storage = {
   async get(key){
     try{
@@ -320,7 +306,6 @@ const Storage = {
   }
 };
 
-/* ============================ УТИЛИТЫ ============================ */
 const $ = (s,r=document)=>r.querySelector(s);
 const uid = ()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
 const pad = n=>String(n).padStart(2,'0');
@@ -337,7 +322,6 @@ function firstOfNextMonth(from=new Date()){return fmtKey(new Date(from.getFullYe
 function daysBetween(k1,k2){return Math.round((parseKey(k2)-parseKey(k1))/86400000);}
 function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2000);}
 
-/* ============================ ПЛАНЕР ДНЯ ============================ */
 const LS_KEY='dayquest_v1';
 const TIERS={important:{label:'Важно',icon:'🔥',percent:30,max:6},desirable:{label:'Желательно',icon:'⭐',percent:20,max:3},minor:{label:'Неважно',icon:'🌱',percent:10,max:1}};
 const TIER_ORDER=['important','desirable','minor'];
@@ -368,7 +352,6 @@ function blankDay(){return{slots:{important:[null,null,null],desirable:[null,nul
 function getDay(k){if(!state.days[k])state.days[k]=blankDay();return state.days[k];}
 function peekDay(k){return state.days[k]||blankDay();}
 
-/* ============================ ПРОЕКТ (58 шагов) ============================ */
 const PROJ_LS_KEY='dayquest_projects_v2';
 const PHASES=[
   {cycles:1,work:5,rest:1,rewards:[2,3,4],name:'Разгон',emoji:'🌱'},
@@ -510,7 +493,6 @@ function dropActiveStep(){const p=getActiveProject();if(!p)return;
   if(p.activeStep!==null&&p.stepMarks[p.activeStep])delete p.stepMarks[p.activeStep];
   p.activeStep=null;p.activeStepProgress={};saveStore();render();}
 
-/* ============================ РАСЧЁТ ДНЯ ============================ */
 function computeDay(key){
   const day=peekDay(key);
   let taskPoints=0;
@@ -532,7 +514,6 @@ function computeDay(key){
   return{taskPoints,projectPoints:projPts,ritualPercent,condPercent,percent,bonus,total};
 }
 
-/* ============================ ЗАДАЧИ ДНЯ ============================ */
 function completeTask(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.place==='archive')return;t.dueDate=null;t.overdue=false;
   if(t.kind==='weekly'){t.place='weekly';t.returnAfter=nextMonday();}
   else if(t.kind==='monthly'){t.place='monthly';t.returnAfter=firstOfNextMonth();}
@@ -575,7 +556,6 @@ function closeStepModal(){$('#stepModal').classList.remove('show');$('#stepModal
 function openTitlesModal(){renderTitlesModal();$('#titlesModal').classList.add('show');$('#titlesModalBackdrop').classList.add('show');document.body.style.overflow='hidden';}
 function closeTitlesModal(){$('#titlesModal').classList.remove('show');$('#titlesModalBackdrop').classList.remove('show');document.body.style.overflow='';render();}
 
-/* ============================ РЕНДЕР ============================ */
 function render(){
   renderSummary();
   renderRituals('morning',$('#morningBlock'));
@@ -587,7 +567,6 @@ function render(){
   renderProjDay();
   renderProjectTab();
 }
-
 function renderSummary(){const key=todayKey();const r=computeDay(key);
   $('#sumDate').textContent='Сегодня · '+prettyDate(key);
   $('#totalPts').textContent=fmtNum(r.total);
@@ -595,7 +574,6 @@ function renderSummary(){const key=todayKey();const r=computeDay(key);
   $('#projPts').textContent=r.projectPoints;
   $('#ritPct').textContent=r.percent+'%';
   $('#bonusPts').textContent='+'+fmtNum(r.bonus);}
-
 function renderRituals(blockKey,container){const title=blockKey==='morning'?'🌅 Утро — Пробуждение':'🌙 Вечер — Релакс';const day=getDay(todayKey());
   let h=`<div class="block-head"><h2>${title}</h2><span class="hint">ритуалы неизменны</span></div>`;
   for(const tier of TIER_ORDER){const meta=TIERS[tier];
@@ -604,7 +582,6 @@ function renderRituals(blockKey,container){const title=blockKey==='morning'?'�
       h+=`<div class="ritual ${on?'on':''}" data-ritual="${r.id}"><span class="check">${on?'✓':''}</span><span class="ritual-text">${esc(r.text)}</span><button class="edit-ritual" data-edit-ritual="${r.id}">✏️</button></div>`;}
     h+=`</div></div>`;}
   container.innerHTML=h;}
-
 function renderConditions(container){const day=getDay(todayKey());
   let h=`<div class="block-head"><h2>🚫 Условия дня</h2><span class="hint">держишь — получаешь бонус</span></div>`;
   h+=`<div class="ritual-grid">`;
@@ -613,7 +590,6 @@ function renderConditions(container){const day=getDay(todayKey());
   h+=`</div>`;
   h+=`<div class="conditions-note">Каждое условие даёт +${CONDITION_PERCENT}% к итоговым баллам (задачи + проект)</div>`;
   container.innerHTML=h;}
-
 function renderTaskBlock(container){const day=getDay(todayKey());
   let h=`<div class="block-head"><h2>🎯 Задачи дня</h2><span class="hint">тапни пустой слот</span></div>`;
   for(const tier of TIER_ORDER){const meta=TIERS[tier];
@@ -626,13 +602,11 @@ function renderTaskBlock(container){const day=getDay(todayKey());
         h+=`</div><div class="slot-foot"><span class="pts">${pts} б</span><button class="icon-btn" data-clear-slot="${tier}:${i}">✕</button></div></div>`;}}
     h+=`</div></div>`;}
   container.innerHTML=h;}
-
 function deckItem(t,extra=''){const exp=expandedTaskId===t.id;const day=getDay(todayKey());let picker='';
   if(exp){const btns=TIER_ORDER.map(tier=>{const meta=TIERS[tier];const free=day.slots[tier].filter(x=>x===null).length;
     return `<button data-place="${tier}" data-task="${t.id}" ${free===0?'disabled':''}>${meta.icon} ${meta.label} · ${free}/3</button>`;}).join('');
     picker=`<div class="tier-picker show"><div class="picker-hint">Выбери приоритет</div><div style="display:flex;gap:6px">${btns}</div></div>`;}
   return `<div class="deck-item ${exp?'expanded':''}" data-task="${t.id}"><span class="di-title">${esc(t.title)}</span>${extra}<button class="mini-btn" data-del="${t.id}">✕</button></div>${picker}`;}
-
 function renderDecks(){const key=todayKey();const day=getDay(key);const used=new Set();TIER_ORDER.forEach(tr=>day.slots[tr].forEach(id=>{if(id)used.add(id);}));
   const main=state.tasks.filter(t=>t.place==='main'&&!t.dueDate&&!used.has(t.id)&&!t.overdue);
   const sched=state.tasks.filter(t=>t.place!=='archive'&&t.dueDate===key&&!used.has(t.id));
@@ -641,7 +615,6 @@ function renderDecks(){const key=todayKey();const day=getDay(key);const used=new
   const monthly=state.tasks.filter(t=>t.place==='monthly');
   const archive=state.tasks.filter(t=>t.place==='archive');
   $('#fabCount').textContent=main.length+sched.length+overdue.length;
-
   let h='';
   h+=`<div class="deck-group" style="border-bottom:1px solid var(--border);padding-bottom:16px"><div class="deck-title">➕ Новое дело</div><input class="field" id="newTitle" placeholder="Что нужно сделать?" maxlength="90"><div class="form-row"><select class="field" id="newKind"><option value="normal">Обычное</option><option value="weekly">Еженедельное</option><option value="monthly">Ежемесячное</option></select><input class="field" type="date" id="newDate"></div><button class="btn full" id="addTask">Добавить в колоду</button></div>`;
   h+=`<div class="deck-group"><div class="deck-title">📦 Основная <span class="count">${main.length}</span></div>`;
@@ -657,12 +630,10 @@ function renderDecks(){const key=todayKey();const day=getDay(key);const used=new
   if(monthly.length)h+=`<div class="deck-group"><div class="deck-title">🗓 Ежемесячные <span class="count">${monthly.length}</span></div>`+monthly.map(t=>`<div class="deck-item" style="cursor:default"><span class="di-title">${esc(t.title)}</span><span class="di-date">${t.returnAfter?prettyDate(t.returnAfter):'—'}</span></div>`).join('')+`</div>`;
   if(archive.length)h+=`<div class="deck-group"><div class="deck-title">✅ Готово <span class="count">${archive.length}</span></div>`+archive.slice(-8).reverse().map(t=>`<div class="deck-item" style="opacity:.55;cursor:default"><span class="di-title" style="text-decoration:line-through">${esc(t.title)}</span><button class="mini-btn" data-del="${t.id}">✕</button></div>`).join('')+`</div>`;
   $('#sheetBody').innerHTML=h;}
-
 function renderStats(){const bars=[];let maxV=1;
   for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=fmtKey(d);const r=computeDay(k);bars.push({k,r,isToday:i===0});if(r.total>maxV)maxV=r.total;}
   $('#chart').innerHTML=bars.map(b=>{const h=Math.max(3,Math.round(b.r.total/maxV*130));const dd=parseKey(b.k);
     return `<div class="bar-wrap" title="${prettyDate(b.k)}: ${fmtNum(b.r.total)} б"><span class="bar-val">${b.r.total?fmtNum(b.r.total):''}</span><div class="bar ${b.isToday?'today':''}" style="height:${h}px"></div><span class="bar-label">${dd.getDate()}.${pad(dd.getMonth()+1)}</span></div>`;}).join('');
-
   const keys=Object.keys(state.days).filter(k=>{const d=state.days[k];return TIER_ORDER.some(t=>d.slots[t].some(Boolean))||Object.keys(d.checks||{}).length||projectPointsForDay(k)>0;}).sort();
   const rows=keys.map(k=>({k,...computeDay(k)})).reverse();
   const totalAll=rows.reduce((a,r)=>a+r.total,0);
@@ -671,7 +642,6 @@ function renderStats(){const bars=[];let maxV=1;
   const avg=active?Math.round(totalAll/active*10)/10:0;
   let streak=0;const d=new Date();
   while(true){const k=fmtKey(d);const r=computeDay(k);if(r.total>0){streak++;d.setDate(d.getDate()-1);}else break;if(streak>400)break;}
-
   let h=`<h3>🏆 Рекорды</h3><div class="big-stats">
     <div class="big-stat"><b>${fmtNum(Math.round(totalAll*10)/10)}</b><span>всего</span></div>
     <div class="big-stat"><b>${active}</b><span>дней</span></div>
@@ -684,7 +654,6 @@ function renderStats(){const bars=[];let maxV=1;
     if(r.percent)parts.push(`бонусы +${r.percent}% (+${fmtNum(r.bonus)})`);
     return `<div class="table-row"><span class="tr-date">${prettyDate(r.k)}</span><span class="tr-main">${fmtNum(r.total)} б<span class="tr-sub">${parts.length?' · '+parts.join(', '):''}</span></span><span class="tr-total">${r.total>=30?'🔥':r.total>0?'⚡':'·'}</span></div>`;}).join('');
   $('#statsCard').innerHTML=h;}
-
 function renderProjDay(){const cont=$('#projDayCard');const p=getActiveProject();
   if(!p||p.status!=='active'){cont.innerHTML='';return;}
   const info=getPhaseInfo(p.daysElapsed);
@@ -692,7 +661,6 @@ function renderProjDay(){const cont=$('#projDayCard');const p=getActiveProject()
   const isWork=info.isWork;
   const totalDone=p.completedSteps.length;
   const pctDone=Math.round(totalDone/TOTAL_STEPS*100);
-
   let h=`<div class="card proj-card ${isWork?'work':'rest'}">
     <div class="proj-head">
       <div>
@@ -703,7 +671,6 @@ function renderProjDay(){const cont=$('#projDayCard');const p=getActiveProject()
       <div class="proj-day">${totalDone}<small>/${TOTAL_STEPS}</small></div>
     </div>
     <div class="proj-progress"><div class="proj-progress-fill" style="width:${pctDone}%"></div></div>`;
-
   if(p.activeStep!==null){
     const step=p.activeStep;const pr=p.activeStepProgress||{};
     const pts=STEP_KEYS.reduce((a,k,i)=>a+(pr[k]?info.rewards[i]:0),0);
@@ -729,7 +696,6 @@ function renderProjDay(){const cont=$('#projDayCard');const p=getActiveProject()
   }
   h+=`</div>`;
   cont.innerHTML=h;}
-
 function renderProjectTab(){const list=$('#projectList');
   if(!store.projects.length){list.innerHTML=`<div class="card"><div class="empty-note" style="text-align:center;padding:20px">У тебя пока нет проектов.<br>Создай первый выше 👆</div></div>`;return;}
   let h='';
@@ -741,7 +707,6 @@ function renderProjectTab(){const list=$('#projectList');
     let meta=`Шагов: ${done}/${TOTAL_STEPS}`;
     if(p.status==='active'||p.status==='paused'||p.status==='completed')meta+=` · День ${p.daysElapsed+1}/${TOTAL_PROJ_DAYS}`;
     if(info&&(p.status==='active'||p.status==='paused'))meta+=` · Фаза ${info.phaseIdx+1} ${info.emoji}`;
-
     h+=`<div class="proj-item ${isActive?'active':''}">
       <div class="proj-item-head">
         <div><div class="proj-item-title">${esc(p.name)}${isActive?' ⭐':''}</div><div class="proj-item-meta">${statusTxt} · ${meta}</div></div>
@@ -756,7 +721,6 @@ function renderProjectTab(){const list=$('#projectList');
         <button class="mini-btn" data-delete-proj="${p.id}">🗑 Удалить</button>
       </div>
     </div>`;
-
     if(isActive&&(p.status==='active'||p.status==='paused')){
       h+=`<div class="card" style="margin-bottom:14px">
         <div class="deck-title">🗺 Карта шагов</div>
@@ -778,7 +742,6 @@ function renderProjectTab(){const list=$('#projectList');
     }
   }
   list.innerHTML=h;}
-
 function renderStepModal(){const p=getActiveProject();if(!p){closeStepModal();return;}
   let h=`<div class="hint" style="margin-bottom:12px">Выбери любой невыполненный шаг из ${TOTAL_STEPS}</div><div class="step-grid">`;
   for(let i=1;i<=TOTAL_STEPS;i++){
@@ -791,7 +754,6 @@ function renderStepModal(){const p=getActiveProject();if(!p){closeStepModal();re
     </div>`;
   }
   h+=`</div>`;$('#stepModalBody').innerHTML=h;}
-
 function renderTitlesModal(){const p=getActiveProject();if(!p){closeTitlesModal();return;}
   let h=`<div class="titles-list">`;
   for(let i=1;i<=TOTAL_STEPS;i++){
@@ -800,7 +762,6 @@ function renderTitlesModal(){const p=getActiveProject();if(!p){closeTitlesModal(
   }
   h+=`</div>`;$('#titlesModalBody').innerHTML=h;}
 
-/* ============================ ВКЛАДКИ + СОБЫТИЯ ============================ */
 function switchTab(name){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id==='tab-'+name));
   const showFab=name==='planner';$('#fabDecks').style.display=showFab?'':'none';
@@ -818,23 +779,17 @@ document.addEventListener('click',e=>{
     p.stepTitles={};saveStore();renderTitlesModal();toast('Названия очищены');
     return;
   }
-
   const editRit=e.target.closest('[data-edit-ritual]');if(editRit){e.stopPropagation();renameRitual(editRit.dataset.editRitual);return;}
   const editCond=e.target.closest('[data-edit-condition]');if(editCond){e.stopPropagation();renameCondition(editCond.dataset.editCondition);return;}
-
   const ritual=e.target.closest('.ritual[data-ritual]');if(ritual){toggleRitual(ritual.dataset.ritual);return;}
   const cond=e.target.closest('.ritual[data-condition]');if(cond){toggleCondition(cond.dataset.condition);return;}
-
   const clearBtn=e.target.closest('[data-clear-slot]');if(clearBtn){const[t,i]=clearBtn.dataset.clearSlot.split(':');clearSlot(t,Number(i));return;}
   if(e.target.closest('[data-open-sheet]')){openSheet();return;}
   if(e.target.closest('#addTask')){addTask();return;}
-
   const placeBtn=e.target.closest('[data-place]');if(placeBtn&&!placeBtn.disabled){placeTaskAuto(placeBtn.dataset.task,placeBtn.dataset.place);return;}
   const disc=e.target.closest('[data-discard]');if(disc){discardTask(disc.dataset.discard);return;}
   const del=e.target.closest('[data-del]');if(del){deleteTask(del.dataset.del);return;}
-
   const di=e.target.closest('.deck-item');if(di&&di.dataset.task){if(e.target.closest('.resched,.mini-btn'))return;expandedTaskId=expandedTaskId===di.dataset.task?null:di.dataset.task;renderDecks();return;}
-
   if(e.target.closest('#createProject')){createProject();return;}
   const sp=e.target.closest('[data-select-proj]');if(sp){selectActive(sp.dataset.selectProj);toast('Активный проект обновлён');return;}
   const st=e.target.closest('[data-start-proj]');if(st){startProject(st.dataset.startProj);return;}
@@ -847,11 +802,9 @@ document.addEventListener('click',e=>{
     if(et.dataset.editTitles!==store.activeProjectId)selectActive(et.dataset.editTitles);
     openTitlesModal();return;
   }
-
   if(e.target.closest('#takeStepBtn')){openStepModal();return;}
   if(e.target.closest('#dropActiveStep')){dropActiveStep();return;}
   const pick=e.target.closest('[data-pick-step]');if(pick&&!pick.classList.contains('done')){const n=Number(pick.dataset.pickStep);closeStepModal();takeStep(n);return;}
-
   const sn=e.target.closest('[data-step-num]');
   if(sn&&!sn.classList.contains('done')&&!sn.classList.contains('active')){
     const p=getActiveProject();if(!p)return;
@@ -891,46 +844,35 @@ document.addEventListener('keydown',e=>{
   hd.addEventListener('touchend',e=>{const dy=e.changedTouches[0].clientY-sY;sh.style.transform='';sY=null;if(dy>100)closeSheet();});
 })();
 
-/* =========================================================
-   ОБНОВЛЕНИЕ ДНЯ ПРИ ВОЗВРАТЕ В ПРИЛОЖЕНИЕ
-   ========================================================= */
 function refreshDay(){
   processProjectDaily();
   dailyMaintenance();
   saveState();
   render();
 }
-
-document.addEventListener('visibilitychange',()=>{
-  if(!document.hidden) refreshDay();
-});
-
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refreshDay(); });
 window.addEventListener('focus',()=>{ refreshDay(); });
-
 if(window.Capacitor?.Plugins?.App){
   window.Capacitor.Plugins.App.addListener('appStateChange',({isActive})=>{
     if(isActive) refreshDay();
   });
 }
 
-/* =========================================================
-   ПРОВЕРКА ОБНОВЛЕНИЙ
-   ========================================================= */
 async function checkForUpdates(){
   try{
     const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
-    if(!res.ok) return;
+    if(!res.ok){ console.log('No releases yet'); return; }
     const data = await res.json();
     const latestTag = data.tag_name || '';
     const latest = latestTag.replace(/^v/,'').split('-')[0];
     if(!latest) return;
+    console.log('Latest:', latest, 'Current:', APP_VERSION);
     if(compareVersions(latest, APP_VERSION) > 0){
       const apkAsset = (data.assets||[]).find(a => a.name && a.name.endsWith('.apk'));
       if(apkAsset) showUpdateBanner(latest, apkAsset.browser_download_url);
     }
   }catch(e){ console.log('Update check failed', e); }
 }
-
 function compareVersions(a, b){
   const pa = String(a).split('.').map(n=>parseInt(n)||0);
   const pb = String(b).split('.').map(n=>parseInt(n)||0);
@@ -940,7 +882,6 @@ function compareVersions(a, b){
   }
   return 0;
 }
-
 function showUpdateBanner(version, url){
   if(document.getElementById('updateBanner')) return;
   const banner = document.createElement('div');
@@ -948,20 +889,11 @@ function showUpdateBanner(version, url){
   banner.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#3ddc97,#42d3ff);color:#0d1020;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:700;z-index:300;box-shadow:0 8px 30px rgba(61,220,151,.5);display:flex;gap:12px;align-items:center;max-width:92vw';
   banner.innerHTML = `<span>🎉 Версия ${version}</span><button id="updateNow" style="background:#0d1020;color:#fff;padding:7px 14px;border-radius:8px;font-weight:700;border:none;cursor:pointer">Обновить</button><button id="updateDismiss" style="background:transparent;border:none;color:#0d1020;font-size:18px;font-weight:700;cursor:pointer;padding:0 4px">✕</button>`;
   document.body.appendChild(banner);
-
-  banner.querySelector('#updateNow').onclick = () => {
-    window.open(url, '_blank');
-  };
+  banner.querySelector('#updateNow').onclick = () => { window.open(url, '_blank'); };
   banner.querySelector('#updateDismiss').onclick = () => banner.remove();
 }
+document.addEventListener('visibilitychange', () => { if(!document.hidden) checkForUpdates(); });
 
-document.addEventListener('visibilitychange', () => {
-  if(!document.hidden) checkForUpdates();
-});
-
-/* =========================================================
-   СТАРТ
-   ========================================================= */
 (async function init(){
   await loadState();
   await loadStore();
