@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/preferences @capacitor/app
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/preferences @capacitor/app @capacitor/browser
 
       - name: Init Capacitor
         run: npx cap init "DayQuest" "com.dayquest.app" --web-dir=www
@@ -65,14 +65,27 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync
 
-      - name: Build APK
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/dayquest.keystore
+
+      - name: Build signed APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/dayquest.keystore \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
-      - name: Upload APK
+      - name: Rename APK
+        run: |
+          mkdir -p release
+          cp android/app/build/outputs/apk/release/app-release.apk release/DayQuest.apk
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: dayquest-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: release/DayQuest.apk
