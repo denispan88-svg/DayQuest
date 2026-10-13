@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -89,3 +92,18 @@ jobs:
         with:
           name: dayquest-apk
           path: release/DayQuest.apk
+
+      - name: Read version from index.html
+        id: ver
+        run: |
+          V=$(grep -oP "APP_VERSION\s*=\s*'\K[^']+" index.html | head -1)
+          echo "version=$V" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}-${{ github.run_number }}
+          name: DayQuest v${{ steps.ver.outputs.version }} (build ${{ github.run_number }})
+          files: release/DayQuest.apk
+          draft: false
+          prerelease: false
