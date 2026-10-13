@@ -1,8 +1,8 @@
 /* ============================ СОБЫТИЯ ============================ */
 document.addEventListener('click',e=>{
-  const tabBtn=e.target.closest('.tab-btn');if(tabBtn){switchTab(tabBtn.dataset.tab);return;}
+  const tabBtn=e.target.closest('.nav-btn');if(tabBtn){switchTab(tabBtn.dataset.tab);return;}
   if(e.target.closest('#fabDecks')){openSheet();return;}
-  if(e.target.closest('#sheetClose')||e.target.closest('#sheetBackdrop')||e.target.closest('#sheetHandle')){closeSheet();return;}
+  if(e.target.closest('#sheetClose')||e.target.closest('#sheetBackdrop')){closeSheet();return;}
   if(e.target.closest('#stepModalClose')||e.target.closest('#stepModalBackdrop')){closeStepModal();return;}
   if(e.target.closest('#titlesModalClose')||e.target.closest('#titlesModalBackdrop')||e.target.closest('#titlesDone')){closeTitlesModal();return;}
   if(e.target.closest('#titlesClear')){
@@ -69,9 +69,3 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='newTitle')addTask();
   if(e.key==='Enter'&&e.target.id==='newProjName')createProject();
 });
-
-(function(){let sY=null;const sh=$('#bottomSheet');const hd=$('#sheetHandle');
-  hd.addEventListener('touchstart',e=>{sY=e.touches[0].clientY;});
-  hd.addEventListener('touchmove',e=>{if(sY===null)return;const dy=e.touches[0].clientY-sY;if(dy>0)sh.style.transform=`translateY(${dy}px)`;});
-  hd.addEventListener('touchend',e=>{const dy=e.changedTouches[0].clientY-sY;sh.style.transform='';sY=null;if(dy>100)closeSheet();});
-})();

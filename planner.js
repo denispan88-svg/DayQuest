@@ -85,8 +85,18 @@ function clearSlot(tier,index){const day=getDay(todayKey());const id=day.slots[t
 function toggleStatus(tier,index,key){const day=getDay(todayKey());const id=day.slots[tier][index];if(!id)return;
   if(!day.status[id])day.status[id]={};day.status[id][key]=!day.status[id][key];saveState();render();}
 
-function openSheet(){$('#bottomSheet').classList.add('open');$('#sheetBackdrop').classList.add('show');$('#fabDecks').classList.add('hidden');document.body.style.overflow='hidden';}
-function closeSheet(){$('#bottomSheet').classList.remove('open');$('#sheetBackdrop').classList.remove('show');$('#fabDecks').classList.remove('hidden');document.body.style.overflow='';expandedTaskId=null;renderDecks();}
+function openSheet(){
+  $('#bottomSheet').classList.add('open');
+  $('#sheetBackdrop').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  $('#bottomSheet').classList.remove('open');
+  $('#sheetBackdrop').classList.remove('show');
+  document.body.style.overflow='';
+  expandedTaskId=null;
+  renderDecks();
+}
 function openStepModal(){renderStepModal();$('#stepModal').classList.add('show');$('#stepModalBackdrop').classList.add('show');document.body.style.overflow='hidden';}
 function closeStepModal(){$('#stepModal').classList.remove('show');$('#stepModalBackdrop').classList.remove('show');document.body.style.overflow='';}
 function openTitlesModal(){renderTitlesModal();$('#titlesModal').classList.add('show');$('#titlesModalBackdrop').classList.add('show');document.body.style.overflow='hidden';}

@@ -8,7 +8,7 @@
 <link rel="manifest" href="./manifest.json">
 <link rel="stylesheet" href="./styles.css">
 <script>
-  window.APP_VERSION = '1.0.6';
+  window.APP_VERSION = '1.0.7';
   window.GITHUB_REPO = 'denispan88-svg/DayQuest';
 </script>
 </head>
@@ -16,11 +16,11 @@
 
 <header class="topbar">
   <div class="logo">🎮 DayQuest</div>
-  <nav class="tabs">
-    <button class="tab-btn active" data-tab="planner">Планер</button>
-    <button class="tab-btn" data-tab="project">🎯 Проект</button>
-    <button class="tab-btn" data-tab="stats">📊 Стата</button>
-  </nav>
+  <button class="topbar-btn" id="fabDecks">
+    <span class="topbar-btn-icon">📦</span>
+    <span>Дела</span>
+    <span class="topbar-btn-count" id="fabCount">0</span>
+  </button>
 </header>
 
 <main>
@@ -65,15 +65,8 @@
   </section>
 </main>
 
-<button class="fab" id="fabDecks">
-  <span class="fab-icon">📦</span>
-  <span>Дела</span>
-  <span class="fab-count" id="fabCount">0</span>
-</button>
-
 <div class="sheet-backdrop" id="sheetBackdrop"></div>
 <div class="bottom-sheet" id="bottomSheet">
-  <div class="sheet-handle" id="sheetHandle"></div>
   <div class="sheet-head">
     <h3>🗂 Список дел</h3>
     <button class="sheet-close" id="sheetClose">✕</button>
@@ -105,6 +98,21 @@
 
 <div class="toast" id="toast"></div>
 
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="planner">
+    <span class="nav-icon">📅</span>
+    <span class="nav-label">Планер</span>
+  </button>
+  <button class="nav-btn" data-tab="project">
+    <span class="nav-icon">🎯</span>
+    <span class="nav-label">Проект</span>
+  </button>
+  <button class="nav-btn" data-tab="stats">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">Стата</span>
+  </button>
+</nav>
+
 <script src="./storage.js"></script>
 <script src="./utils.js"></script>
 <script src="./project.js"></script>
@@ -112,10 +120,5 @@
 <script src="./render.js"></script>
 <script src="./events.js"></script>
 <script src="./app.js"></script>
-<script>
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').catch(console.error);
-}
-</script>
 </body>
 </html>

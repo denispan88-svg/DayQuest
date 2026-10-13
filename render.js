@@ -204,7 +204,9 @@ function renderTitlesModal(){const p=getActiveProject();if(!p){closeTitlesModal(
     h+=`<div class="titles-row"><span class="num">${i}.</span><input type="text" data-title-num="${i}" value="${esc(val)}" placeholder="Шаг ${i}" maxlength="80" class="${val.trim()?'filled':''}"></div>`;
   }
   h+=`</div>`;$('#titlesModalBody').innerHTML=h;}
-function switchTab(name){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+function switchTab(name){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id==='tab-'+name));
-  const showFab=name==='planner';$('#fabDecks').style.display=showFab?'':'none';
-  if(name==='stats')renderStats();if(name==='project')renderProjectTab();}
+  if(name==='stats')renderStats();
+  if(name==='project')renderProjectTab();
+}
