@@ -3,6 +3,7 @@ name: Build APK
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,13 +18,22 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Prepare web directory
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp manifest.json www/
+          cp sw.js www/
+          cp icon-192.png www/
+          cp icon-512.png www/
+
       - name: Install dependencies
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/preferences @capacitor/app
 
       - name: Init Capacitor
-        run: npx cap init "DayQuest" "com.yourname.dayquest" --web-dir=.
+        run: npx cap init "DayQuest" "com.dayquest.app" --web-dir=www
 
       - name: Add Android platform
         run: npx cap add android
