@@ -289,12 +289,16 @@ select.field{cursor:pointer}select.field option{background:#1a1f38}
 
 <script>
 /* =========================================================
+   ВЕРСИЯ И РЕПОЗИТОРИЙ (для проверки обновлений)
+   ========================================================= */
+const APP_VERSION = '1.0.0';
+const GITHUB_REPO = 'denispan88-svg/DayQuest';
+
+/* =========================================================
    ХРАНИЛИЩЕ — работает и в браузере, и в APK
    В браузере → localStorage
-   В APK (Capacitor) → нативные Preferences (не стираются кэшем)
+   В APK (Capacitor) → нативные Preferences
    ========================================================= */
-  const APP_VERSION = '1.0.0';
-const GITHUB_REPO = 'denispan88-svg/DayQuest';
 const Storage = {
   async get(key){
     try{
@@ -302,7 +306,7 @@ const Storage = {
         const { value } = await window.Capacitor.Plugins.Preferences.get({ key });
         return value;
       }
-    }catch(e){ /* упало — падаем в localStorage */ }
+    }catch(e){}
     try{ return localStorage.getItem(key); }catch(e){ return null; }
   },
   async set(key, value){
@@ -311,7 +315,7 @@ const Storage = {
         await window.Capacitor.Plugins.Preferences.set({ key, value });
         return;
       }
-    }catch(e){ /* упало — падаем в localStorage */ }
+    }catch(e){}
     try{ localStorage.setItem(key, value); }catch(e){}
   }
 };
@@ -889,8 +893,6 @@ document.addEventListener('keydown',e=>{
 
 /* =========================================================
    ОБНОВЛЕНИЕ ДНЯ ПРИ ВОЗВРАТЕ В ПРИЛОЖЕНИЕ
-   Работает и в браузере (visibilitychange),
-   и в APK (Capacitor appStateChange)
    ========================================================= */
 function refreshDay(){
   processProjectDaily();
@@ -912,12 +914,8 @@ if(window.Capacitor?.Plugins?.App){
 }
 
 /* =========================================================
-   СТАРТ
+   ПРОВЕРКА ОБНОВЛЕНИЙ
    ========================================================= */
-(async function init(){
-  loadState();loadStore();processProjectDaily();dailyMaintenance();saveState();render();
-
-/* === Проверка обновлений === */
 async function checkForUpdates(){
   try{
     const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
@@ -927,7 +925,7 @@ async function checkForUpdates(){
     const latest = latestTag.replace(/^v/,'').split('-')[0];
     if(!latest) return;
     if(compareVersions(latest, APP_VERSION) > 0){
-      const apkAsset = (data.assets||[]).find(a => a.name.endsWith('.apk'));
+      const apkAsset = (data.assets||[]).find(a => a.name && a.name.endsWith('.apk'));
       if(apkAsset) showUpdateBanner(latest, apkAsset.browser_download_url);
     }
   }catch(e){ console.log('Update check failed', e); }
@@ -951,18 +949,28 @@ function showUpdateBanner(version, url){
   banner.innerHTML = `<span>🎉 Версия ${version}</span><button id="updateNow" style="background:#0d1020;color:#fff;padding:7px 14px;border-radius:8px;font-weight:700;border:none;cursor:pointer">Обновить</button><button id="updateDismiss" style="background:transparent;border:none;color:#0d1020;font-size:18px;font-weight:700;cursor:pointer;padding:0 4px">✕</button>`;
   document.body.appendChild(banner);
 
-  banner.querySelector('#updateNow').onclick = async () => {
-    if(window.Capacitor?.Plugins?.Browser){
-      await window.Capacitor.Plugins.Browser.open({ url });
-    } else {
-      window.open(url, '_blank');
-    }
+  banner.querySelector('#updateNow').onclick = () => {
+    window.open(url, '_blank');
   };
   banner.querySelector('#updateDismiss').onclick = () => banner.remove();
 }
 
-setTimeout(checkForUpdates, 2500);
-document.addEventListener('visibilitychange', () => { if(!document.hidden) checkForUpdates(); });
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden) checkForUpdates();
+});
+
+/* =========================================================
+   СТАРТ
+   ========================================================= */
+(async function init(){
+  await loadState();
+  await loadStore();
+  processProjectDaily();
+  dailyMaintenance();
+  await saveState();
+  await saveStore();
+  render();
+  setTimeout(checkForUpdates, 2500);
 })();
 </script>
 
