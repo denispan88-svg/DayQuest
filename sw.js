@@ -1,16 +1,21 @@
-// Меняй версию, когда обновляешь index.html,
-// чтобы браузер подхватил новую версию
-const CACHE_VERSION = 'dayquest-v3';
+const CACHE_VERSION = 'dayquest-v4';
 
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './css/styles.css',
+  './js/storage.js',
+  './js/utils.js',
+  './js/project.js',
+  './js/planner.js',
+  './js/render.js',
+  './js/events.js',
+  './js/app.js'
 ];
 
-// Установка: кладём файлы в кэш
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
@@ -19,7 +24,6 @@ self.addEventListener('install', event => {
   );
 });
 
-// Активация: удаляем старые кэши
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
@@ -31,15 +35,11 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Запросы: сначала сеть, при неудаче — кэш
 self.addEventListener('fetch', event => {
-  // Пропускаем запросы к другим доменам
   if (!event.request.url.startsWith(self.location.origin)) return;
-
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        // Обновляем кэш свежей версией
         const copy = response.clone();
         caches.open(CACHE_VERSION).then(cache => {
           cache.put(event.request, copy).catch(() => {});

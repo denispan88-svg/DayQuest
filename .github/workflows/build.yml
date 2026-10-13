@@ -30,11 +30,7 @@ jobs:
       - name: Prepare web directory
         run: |
           mkdir -p www
-          cp index.html www/
-          cp manifest.json www/
-          cp sw.js www/
-          cp icon-192.png www/
-          cp icon-512.png www/
+          cp -r index.html manifest.json sw.js icon-192.png icon-512.png css js www/
 
       - name: Install dependencies
         run: |
