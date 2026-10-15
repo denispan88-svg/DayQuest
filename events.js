@@ -45,6 +45,25 @@ document.addEventListener('click',e=>{
     if(!info||!info.isWork){toast('Сегодня выходной');return;}
     takeStep(Number(sn.dataset.stepNum));return;
   }
+
+  // === СЕРВИСЫ ===
+  if(e.target.closest('#serviceBack')){closeService();return;}
+  if(e.target.closest('#diaryNew')){newDiaryEntry();return;}
+  if(e.target.closest('#diaryBack') || e.target.closest('#diaryCancel')){discardDiaryEntry();return;}
+  if(e.target.closest('#diarySave')){saveDiaryEntryFromForm();return;}
+
+  const svc=e.target.closest('[data-service]');
+  if(svc){openService(svc.dataset.service);return;}
+
+  const diaryDel=e.target.closest('[data-diary-del]');
+  if(diaryDel){deleteDiaryEntry(diaryDel.dataset.diaryDel);return;}
+
+  const diaryOpen=e.target.closest('[data-diary-open]');
+  if(diaryOpen){
+    editingEntryId=diaryOpen.dataset.diaryOpen;
+    openServiceEditor();
+    return;
+  }
 });
 
 document.addEventListener('change',e=>{

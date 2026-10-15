@@ -209,4 +209,5 @@ function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id==='tab-'+name));
   if(name==='stats')renderStats();
   if(name==='project')renderProjectTab();
+  if(name==='services')renderServices();
 }

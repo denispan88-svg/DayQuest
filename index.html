@@ -8,7 +8,7 @@
 <link rel="manifest" href="./manifest.json">
 <link rel="stylesheet" href="./styles.css">
 <script>
-  window.APP_VERSION = '1.0.7';
+  window.APP_VERSION = '1.0.8';
   window.GITHUB_REPO = 'denispan88-svg/DayQuest';
 </script>
 </head>
@@ -63,6 +63,11 @@
     </div>
     <div class="card" id="statsCard"></div>
   </section>
+
+  <section id="tab-services" class="tab">
+    <div id="servicesList"></div>
+    <div id="serviceView" style="display:none"></div>
+  </section>
 </main>
 
 <div class="sheet-backdrop" id="sheetBackdrop"></div>
@@ -111,12 +116,18 @@
     <span class="nav-icon">📊</span>
     <span class="nav-label">Стата</span>
   </button>
+  <button class="nav-btn" data-tab="services">
+    <span class="nav-icon">🧰</span>
+    <span class="nav-label">Сервисы</span>
+  </button>
 </nav>
 
 <script src="./storage.js"></script>
 <script src="./utils.js"></script>
 <script src="./project.js"></script>
 <script src="./planner.js"></script>
+<script src="./services.js"></script>
+<script src="./services/diary.js"></script>
 <script src="./render.js"></script>
 <script src="./events.js"></script>
 <script src="./app.js"></script>
