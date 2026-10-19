@@ -50,6 +50,9 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Generate app icons
+        run: npx @capacitor/assets generate --android
+
       - name: Fix Kotlin version conflict
         run: |
           cat >> android/build.gradle << 'EOF'
