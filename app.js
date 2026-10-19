@@ -55,6 +55,7 @@ document.addEventListener('visibilitychange', () => { if(!document.hidden) check
   await loadState();
   await loadStore();
   if(typeof loadDiary === 'function') await loadDiary();
+  if(typeof loadMeds === 'function') await loadMeds();
   processProjectDaily();
   dailyMaintenance();
   await saveState();

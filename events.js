@@ -48,22 +48,88 @@ document.addEventListener('click',e=>{
 
   // === СЕРВИСЫ ===
   if(e.target.closest('#serviceBack')){closeService();return;}
+  
+  // Дневник
   if(e.target.closest('#diaryNew')){newDiaryEntry();return;}
   if(e.target.closest('#diaryBack') || e.target.closest('#diaryCancel')){discardDiaryEntry();return;}
   if(e.target.closest('#diarySave')){saveDiaryEntryFromForm();return;}
-
-  const svc=e.target.closest('[data-service]');
-  if(svc){openService(svc.dataset.service);return;}
-
   const diaryDel=e.target.closest('[data-diary-del]');
-  if(diaryDel){deleteDiaryEntry(diaryDel.dataset.diaryDel);return;}
-
+  if(diaryDel){e.stopPropagation();deleteDiaryEntry(diaryDel.dataset.diaryDel);return;}
   const diaryOpen=e.target.closest('[data-diary-open]');
   if(diaryOpen){
     editingEntryId=diaryOpen.dataset.diaryOpen;
     openServiceEditor();
     return;
   }
+
+  // Витамины
+  if(e.target.closest('#medCreateIntakeBtn')){
+    const inp = document.getElementById('newIntakeNameInput');
+    if(inp && inp.value.trim()){
+      createIntake(inp.value);
+      inp.value = ''; 
+    } else {
+      toast('Введите название');
+    }
+    return;
+  }
+  if(e.target.closest('#medVitaminsBtn')){setMedView('vitamins');return;}
+  if(e.target.closest('#medNewVitamin')){setMedView('createVitamin');return;}
+  if(e.target.closest('#medSaveVitamin')){saveNewVitamin();return;}
+  
+  if(e.target.closest('#medBackMain')){setMedView('main');return;}
+  if(e.target.closest('#medBackMainFromVits')){setMedView('main');return;}
+  if(e.target.closest('#medBackVits')){setMedView('vitamins');return;}
+
+  const medAddVit = e.target.closest('[data-med-add-vit]');
+  if(medAddVit){ setMedView('addToIntake', medAddVit.dataset.medAddVit); return; }
+
+  const medDelIntake = e.target.closest('[data-med-del-intake]');
+  if(medDelIntake){e.stopPropagation();deleteIntake(medDelIntake.dataset.medDelIntake);return;}
+  
+  const medDelVit = e.target.closest('[data-med-del-vit]');
+  if(medDelVit){deleteVitamin(medDelVit.dataset.medDelVit);return;}
+  
+  const medPickVit = e.target.closest('[data-med-pick-vit]');
+  if(medPickVit){
+    addingVitaminId = medPickVit.dataset.medPickVit;
+    setMedView('inputDosage');
+    return;
+  }
+  
+  if(e.target.closest('#medBackAddIntake')){
+    addingVitaminId = null;
+    setMedView('addToIntake');
+    return;
+  }
+  
+  if(e.target.closest('#medSaveDosage')){
+    const inp = document.getElementById('dosageInput');
+    if(inp && inp.value.trim()){
+      saveVitaminDosage(inp.value);
+    } else {
+      toast('Введите дозировку');
+    }
+    return;
+  }
+  
+  const medRemVit = e.target.closest('[data-med-rem-vit]');
+  if(medRemVit){
+    const [intakeId, vitId] = medRemVit.dataset.medRemVit.split(':');
+    removeVitaminFromIntake(intakeId, vitId);
+    return;
+  }
+
+  const medToggle = e.target.closest('[data-med-toggle]');
+  if(medToggle && !e.target.closest('[data-med-rem-vit]')) { 
+    const [intakeId, vitId] = medToggle.dataset.medToggle.split(':');
+    toggleIntakeItem(intakeId, vitId);
+    return; 
+  }
+
+  // Общий выбор сервиса
+  const svc=e.target.closest('[data-service]');
+  if(svc){openService(svc.dataset.service);return;}
 });
 
 document.addEventListener('change',e=>{

@@ -5,6 +5,12 @@ const SERVICES = [
     name: 'Дневник',
     icon: '📓',
     description: 'Выгрузи то, что вертится в голове. Не влияет на баллы.',
+  },
+  {
+    id: 'medications',
+    name: 'Витамины',
+    icon: '💊',
+    description: 'План приема и проверка совместимости препаратов.',
   }
 ];
 
@@ -23,10 +29,26 @@ function renderServices(){
   } else {
     listEl.style.display = 'none';
     viewEl.style.display = '';
+    
     if(currentServiceId === 'diary'){
       if(serviceView === 'editor') renderDiaryEditor();
       else renderDiaryView();
+    } else if(currentServiceId === 'medications'){
+      renderMedsView();
     }
+  }
+}
+
+function openService(id){
+  currentServiceId = id;
+  serviceView = 'service';
+  
+  if(id === 'diary' && typeof loadDiary === 'function'){
+    loadDiary().then(() => renderServices());
+  } else if(id === 'medications' && typeof openMedications === 'function'){
+    openMedications();
+  } else {
+    renderServices();
   }
 }
 
