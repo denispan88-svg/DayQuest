@@ -30,10 +30,11 @@ jobs:
       - name: Prepare web directory
         run: |
           mkdir -p www
+          cp index.html www/
+          cp *.js www/
+          cp *.css www/
           mkdir -p www/services
-          cp index.html icon-192.png icon-512.png www/
-          cp *.js *.css www/ || true
-          cp services/*.js www/services/ || true
+          cp services/*.js www/services/
 
       - name: Install dependencies
         run: |
