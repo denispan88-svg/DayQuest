@@ -30,16 +30,15 @@ jobs:
       - name: Prepare web directory
         run: |
           mkdir -p www
-          cp index.html www/
-          cp *.js www/
-          cp *.css www/
           mkdir -p www/services
-          cp services/*.js www/services/
+          # Копируем всё, что есть (звёздочка), чтобы не падало из-за отсутствия файла
+          cp *.html *.png *.js *.css *.json www/ 2>/dev/null || true
+          cp services/*.js www/services/ 2>/dev/null || true
 
       - name: Install dependencies
         run: |
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/preferences @capacitor/app
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/preferences @capacitor/app @capacitor/assets
 
       - name: Init Capacitor
         run: npx cap init "DayQuest" "com.dayquest.app" --web-dir=www
@@ -48,7 +47,7 @@ jobs:
         run: npx cap add android
 
       - name: Generate app icons
-        run: npx @capacitor/assets generate --android
+        run: npx -y @capacitor/assets generate --android
 
       - name: Fix Kotlin version conflict
         run: |
