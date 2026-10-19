@@ -31,8 +31,10 @@ jobs:
         run: |
           mkdir -p www
           mkdir -p www/services
-          # Копируем всё, что есть (звёздочка), чтобы не падало из-за отсутствия файла
-          cp *.html *.png *.js *.css *.json www/ 2>/dev/null || true
+          # Копируем только то, что реально нужно для работы
+          cp index.html www/ 2>/dev/null || true
+          cp *.js www/ 2>/dev/null || true
+          cp *.css www/ 2>/dev/null || true
           cp services/*.js www/services/ 2>/dev/null || true
 
       - name: Install dependencies
