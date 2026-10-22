@@ -1,23 +1,21 @@
 /* =========================================================
-   ХРАНИЛИЩЕ — работает и в браузере, и в APK
+   ХРАНИЛИЩЕ (только для нативного APK через Capacitor)
    ========================================================= */
 const Storage = {
   async get(key){
-    try{
-      if(window.Capacitor?.Plugins?.Preferences){
-        const { value } = await window.Capacitor.Plugins.Preferences.get({ key });
-        return value;
-      }
-    }catch(e){}
-    try{ return localStorage.getItem(key); }catch(e){ return null; }
+    try {
+      const { value } = await window.Capacitor.Plugins.Preferences.get({ key });
+      return value;
+    } catch(e) {
+      console.error('Ошибка чтения Preferences:', e);
+      return null;
+    }
   },
   async set(key, value){
-    try{
-      if(window.Capacitor?.Plugins?.Preferences){
-        await window.Capacitor.Plugins.Preferences.set({ key, value });
-        return;
-      }
-    }catch(e){}
-    try{ localStorage.setItem(key, value); }catch(e){}
+    try {
+      await window.Capacitor.Plugins.Preferences.set({ key, value });
+    } catch(e) {
+      console.error('Ошибка записи Preferences:', e);
+    }
   }
 };

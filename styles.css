@@ -98,12 +98,22 @@ main {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-weight: 800;
   font-size: 18px;
   background: linear-gradient(90deg, var(--accent2), var(--accent));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .topbar-btn {

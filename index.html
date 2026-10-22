@@ -1,135 +1,148 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d1020">
-<title>DayQuest</title>
-<link rel="stylesheet" href="./styles.css">
-<script>
-  window.APP_VERSION = '1.0.10';
-  window.GITHUB_REPO = 'denispan88-svg/DayQuest';
-</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0d1020">
+  <title>DayQuest</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    window.APP_VERSION = '1.0.11';
+    window.GITHUB_REPO = 'denispan88-svg/DayQuest';
+  </script>
 </head>
+
 <body>
 
-<header class="topbar">
-  <div class="logo">🎮 DayQuest</div>
-  <button class="topbar-btn" id="fabDecks">
-    <span class="topbar-btn-icon">📦</span>
-    <span>Дела</span>
-    <span class="topbar-btn-count" id="fabCount">0</span>
-  </button>
-</header>
+  <header class="topbar">
+    <div class="logo">
+      <img src="./assets/icon.png" class="logo-img" alt="DayQuest">
+      <span>DayQuest</span>
+    </div>
+    <button class="topbar-btn" id="fabDecks">
+      <span class="topbar-btn-icon">📦</span>
+      <span>Дела</span>
+      <span class="topbar-btn-count" id="fabCount">0</span>
+    </button>
+  </header>
 
-<main>
-  <section id="tab-planner" class="tab active">
-    <div class="col-main">
-      <div class="card summary">
-        <div>
-          <div class="sum-date" id="sumDate">Сегодня</div>
-          <div class="sum-total"><span id="totalPts">0</span> <small>баллов</small></div>
+  <main>
+    <section id="tab-planner" class="tab active">
+      <div class="col-main">
+        <div class="card summary">
+          <div>
+            <div class="sum-date" id="sumDate">Сегодня</div>
+            <div class="sum-total"><span id="totalPts">0</span> <small>баллов</small></div>
+          </div>
+          <div class="sum-right">
+            <div class="stat"><span>Задачи</span><b id="taskPts">0</b></div>
+            <div class="stat proj"><span>Проект</span><b id="projPts">0</b></div>
+            <div class="stat gold"><span>Бонусы</span><b id="ritPct">0%</b></div>
+            <div class="stat"><span>Бонус</span><b id="bonusPts">0</b></div>
+          </div>
         </div>
-        <div class="sum-right">
-          <div class="stat"><span>Задачи</span><b id="taskPts">0</b></div>
-          <div class="stat proj"><span>Проект</span><b id="projPts">0</b></div>
-          <div class="stat gold"><span>Бонусы</span><b id="ritPct">0%</b></div>
-          <div class="stat"><span>Бонус</span><b id="bonusPts">0</b></div>
-        </div>
+        <div id="projDayCard"></div>
+        <section class="card block" id="morningBlock"></section>
+        <section class="card block" id="dayBlock"></section>
+        <section class="card block" id="eveningBlock"></section>
+        <section class="card block" id="conditionsBlock"></section>
       </div>
-      <div id="projDayCard"></div>
-      <section class="card block" id="morningBlock"></section>
-      <section class="card block" id="dayBlock"></section>
-      <section class="card block" id="eveningBlock"></section>
-      <section class="card block" id="conditionsBlock"></section>
+    </section>
+
+    <section id="tab-project" class="tab">
+      <div class="card" style="margin-bottom:16px">
+        <h3>➕ Создать проект (58 шагов)</h3>
+        <input class="field" id="newProjName" placeholder="Название проекта" maxlength="60">
+        <button class="btn full" id="createProject">Создать проект</button>
+        <div class="hint" style="margin-top:8px">График: 5+1 → 2×(4+1) → 4×(3+1) → 8×(2+1) → 17×(1+1). Всего 90 дней, 58
+          шагов.</div>
+      </div>
+      <div id="projectList"></div>
+    </section>
+
+    <section id="tab-stats" class="tab">
+      <div class="card" style="margin-bottom:16px">
+        <h3>📈 Динамика за 14 дней</h3>
+        <div class="chart" id="chart"></div>
+      </div>
+      <div class="card" id="statsCard"></div>
+    </section>
+
+    <section id="tab-services" class="tab">
+      <div id="servicesList"></div>
+      <div id="serviceView" style="display:none"></div>
+    </section>
+  </main>
+
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <div class="bottom-sheet" id="bottomSheet">
+    <div class="sheet-head">
+      <h3>🗂 Список дел</h3>
+      <button class="sheet-close" id="sheetClose">✕</button>
     </div>
-  </section>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
 
-  <section id="tab-project" class="tab">
-    <div class="card" style="margin-bottom:16px">
-      <h3>➕ Создать проект (58 шагов)</h3>
-      <input class="field" id="newProjName" placeholder="Название проекта" maxlength="60">
-      <button class="btn full" id="createProject">Создать проект</button>
-      <div class="hint" style="margin-top:8px">График: 5+1 → 2×(4+1) → 4×(3+1) → 8×(2+1) → 17×(1+1). Всего 90 дней, 58 шагов.</div>
+  <div class="modal-backdrop" id="stepModalBackdrop"></div>
+  <div class="modal" id="stepModal">
+    <div class="modal-head">
+      <div>
+        <h3>Выбери шаг проекта</h3>
+        <div class="sub">Тапни любой свободный шаг</div>
+      </div>
+      <button class="modal-close" id="stepModalClose">✕</button>
     </div>
-    <div id="projectList"></div>
-  </section>
+    <div class="modal-body" id="stepModalBody"></div>
+  </div>
 
-  <section id="tab-stats" class="tab">
-    <div class="card" style="margin-bottom:16px">
-      <h3>📈 Динамика за 14 дней</h3>
-      <div class="chart" id="chart"></div>
+  <div class="modal-backdrop" id="titlesModalBackdrop"></div>
+  <div class="modal" id="titlesModal">
+    <div class="modal-head">
+      <div>
+        <h3>✏️ Названия шагов</h3>
+        <div class="sub">Заполняй любые — сохранение мгновенное</div>
+      </div>
+      <button class="modal-close" id="titlesModalClose">✕</button>
     </div>
-    <div class="card" id="statsCard"></div>
-  </section>
-
-  <section id="tab-services" class="tab">
-    <div id="servicesList"></div>
-    <div id="serviceView" style="display:none"></div>
-  </section>
-</main>
-
-<div class="sheet-backdrop" id="sheetBackdrop"></div>
-<div class="bottom-sheet" id="bottomSheet">
-  <div class="sheet-head">
-    <h3>🗂 Список дел</h3>
-    <button class="sheet-close" id="sheetClose">✕</button>
+    <div class="modal-body" id="titlesModalBody"></div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="titlesClear">Очистить все</button>
+      <button class="btn green" id="titlesDone">Готово</button>
+    </div>
   </div>
-  <div class="sheet-body" id="sheetBody"></div>
-</div>
 
-<div class="modal-backdrop" id="stepModalBackdrop"></div>
-<div class="modal" id="stepModal">
-  <div class="modal-head">
-    <div><h3>Выбери шаг проекта</h3><div class="sub">Тапни любой свободный шаг</div></div>
-    <button class="modal-close" id="stepModalClose">✕</button>
-  </div>
-  <div class="modal-body" id="stepModalBody"></div>
-</div>
+  <div class="toast" id="toast"></div>
 
-<div class="modal-backdrop" id="titlesModalBackdrop"></div>
-<div class="modal" id="titlesModal">
-  <div class="modal-head">
-    <div><h3>✏️ Названия шагов</h3><div class="sub">Заполняй любые — сохранение мгновенное</div></div>
-    <button class="modal-close" id="titlesModalClose">✕</button>
-  </div>
-  <div class="modal-body" id="titlesModalBody"></div>
-  <div class="modal-foot">
-    <button class="btn ghost" id="titlesClear">Очистить все</button>
-    <button class="btn green" id="titlesDone">Готово</button>
-  </div>
-</div>
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="planner">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Планер</span>
+    </button>
+    <button class="nav-btn" data-tab="project">
+      <span class="nav-icon">🎯</span>
+      <span class="nav-label">Проект</span>
+    </button>
+    <button class="nav-btn" data-tab="stats">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Стата</span>
+    </button>
+    <button class="nav-btn" data-tab="services">
+      <span class="nav-icon">🧰</span>
+      <span class="nav-label">Сервисы</span>
+    </button>
+  </nav>
 
-<div class="toast" id="toast"></div>
-
-<nav class="bottom-nav">
-  <button class="nav-btn active" data-tab="planner">
-    <span class="nav-icon">📅</span>
-    <span class="nav-label">Планер</span>
-  </button>
-  <button class="nav-btn" data-tab="project">
-    <span class="nav-icon">🎯</span>
-    <span class="nav-label">Проект</span>
-  </button>
-  <button class="nav-btn" data-tab="stats">
-    <span class="nav-icon">📊</span>
-    <span class="nav-label">Стата</span>
-  </button>
-  <button class="nav-btn" data-tab="services">
-    <span class="nav-icon">🧰</span>
-    <span class="nav-label">Сервисы</span>
-  </button>
-</nav>
-
-<script src="./storage.js"></script>
-<script src="./utils.js"></script>
-<script src="./project.js"></script>
-<script src="./planner.js"></script>
-<script src="./services.js"></script>
-<script src="./services/diary.js"></script>
-<script src="./services/medications.js"></script>
-<script src="./render.js"></script>
-<script src="./events.js"></script>
-<script src="./app.js"></script>
+  <script src="./storage.js"></script>
+  <script src="./utils.js"></script>
+  <script src="./project.js"></script>
+  <script src="./planner.js"></script>
+  <script src="./services.js"></script>
+  <script src="./services/diary.js"></script>
+  <script src="./services/medications.js"></script>
+  <script src="./render.js"></script>
+  <script src="./events.js"></script>
+  <script src="./app.js"></script>
 </body>
+
 </html>
