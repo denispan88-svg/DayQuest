@@ -1686,3 +1686,118 @@ select.field option {
     min-width: 26px;
   }
 }
+
+/* ---------- Сеть / Карта связей ---------- */
+.network-map-container {
+  width: 100%;
+  height: calc(100vh - 200px);
+  /* Занимает почти весь экран */
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.network-canvas {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  /* Если узлы уйдут за край */
+}
+
+.network-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Клики проходят сквозь линии к узлам */
+  z-index: 1;
+}
+
+.network-node {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--accent), #5b3fd6);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px;
+  word-break: break-all;
+  z-index: 2;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s;
+}
+
+.network-node.dragging {
+  transform: scale(1.1);
+  box-shadow: 0 10px 25px rgba(124, 92, 255, 0.6);
+  z-index: 10;
+  /* Поднимаем над остальными при перетаскивании */
+  cursor: grabbing;
+  transition: none;
+  /* Отключаем анимацию для плавного движения */
+}
+
+/* Ползунки темперамента */
+.temp-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.temp-label {
+  font-size: 12px;
+  color: var(--muted);
+  width: 80px;
+  flex: none;
+}
+
+.temp-range {
+  flex: 1;
+  accent-color: var(--accent2);
+}
+
+.temp-val {
+  font-size: 12px;
+  font-weight: 700;
+  width: 20px;
+  text-align: right;
+}
+
+/* Связи в редакторе */
+.connection-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, .05);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+}
+
+/* ---------- Слой трансформации для карты ---------- */
+.network-transform-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0; /* Зум должен идти от верхнего левого угла */
+  will-change: transform;
+}

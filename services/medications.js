@@ -5,6 +5,7 @@ let medState = null;
 let medView = 'main'; 
 let currentIntakeId = null;
 let addingVitaminId = null; 
+let pendingMedDeleteId = null; // Для подтверждения удаления
 
 function freshMedState(){
   return { intakes: [], vitamins: [] };
@@ -64,10 +65,23 @@ function createIntake(name){
 }
 
 function deleteIntake(id){
-  if(!confirm('Удалить этот прием вместе со всеми препаратами?')) return;
-  medState.intakes = medState.intakes.filter(i => i.id !== id);
-  saveMeds();
-  renderServices();
+  if (pendingMedDeleteId === id) {
+    medState.intakes = medState.intakes.filter(i => i.id !== id);
+    saveMeds();
+    pendingMedDeleteId = null;
+    renderServices();
+    toast('Прием удален 🗑');
+  } else {
+    pendingMedDeleteId = id;
+    renderServices();
+    toast('Нажмите еще раз для удаления');
+    setTimeout(() => {
+        if (pendingMedDeleteId === id) {
+            pendingMedDeleteId = null;
+            renderServices();
+        }
+    }, 3000);
+  }
 }
 
 function toggleIntakeItem(intakeId, vitaminId) {
@@ -78,13 +92,13 @@ function toggleIntakeItem(intakeId, vitaminId) {
   
   const today = todayKey();
   if (item.takenDate === today) {
-    item.takenDate = null; // снимаем галочку
+    item.takenDate = null; 
   } else {
-    item.takenDate = today; // ставим галочку
+    item.takenDate = today; 
   }
   
   saveMeds();
-  renderServices(); // перерисовываем интерфейс
+  renderServices(); 
 }
 
 function saveVitaminDosage(dosage){
@@ -113,13 +127,26 @@ function removeVitaminFromIntake(intakeId, vitaminId){
 
 // --- Действия с витаминами ---
 function deleteVitamin(id){
-  if(!confirm('Удалить витамин из списка? Он исчезнет из всех приемов.')) return;
-  medState.vitamins = medState.vitamins.filter(v => v.id !== id);
-  for(const intake of medState.intakes){
-    intake.items = intake.items.filter(i => i.vitaminId !== id);
+  if (pendingMedDeleteId === id) {
+    medState.vitamins = medState.vitamins.filter(v => v.id !== id);
+    for(const intake of medState.intakes){
+      intake.items = intake.items.filter(i => i.vitaminId !== id);
+    }
+    saveMeds();
+    pendingMedDeleteId = null;
+    renderServices();
+    toast('Витамин удален 🗑');
+  } else {
+    pendingMedDeleteId = id;
+    renderServices();
+    toast('Нажмите еще раз для удаления');
+    setTimeout(() => {
+        if (pendingMedDeleteId === id) {
+            pendingMedDeleteId = null;
+            renderServices();
+        }
+    }, 3000);
   }
-  saveMeds();
-  renderServices();
 }
 
 function getVitaminUsageCount(vitaminId) {
@@ -159,7 +186,6 @@ function renderMedsView(){
       <h2 class="service-title">💊 Витамины</h2>
     </div>`;
 
-    // Форма создания приема
     h += `<div style="display:flex; gap:8px; margin-bottom:20px;">
       <input type="text" id="newIntakeNameInput" class="field" placeholder="Утро, Обед, Вечер..." maxlength="40">
       <button class="btn gold" id="medCreateIntakeBtn" style="flex:none; padding: 0 16px;">Создать</button>
@@ -168,14 +194,16 @@ function renderMedsView(){
     if(!medState.intakes.length) {
       h += `<div class="card"><div class="empty-note" style="text-align:center;padding:20px">Нет созданных приемов.</div></div>`;
     } else {
-      // Выводим приемы и сразу медикаменты
       for(const intake of medState.intakes) {
+        const isPending = pendingMedDeleteId === intake.id;
         h += `<div class="med-card">
           <div class="med-card-head">
             <div class="med-item-title">🕒 ${esc(intake.name)}</div>
             <div style="display:flex; gap:6px;">
               <button class="mini-btn" data-med-add-vit="${intake.id}">+ Добавить</button>
-              <button class="mini-btn" data-med-del-intake="${intake.id}">🗑</button>
+              <button class="mini-btn" data-med-del-intake="${intake.id}" style="${isPending ? 'background:var(--red); border-color:var(--red); color:#fff;' : ''}">
+                ${isPending ? 'Точно?' : '🗑'}
+              </button>
             </div>
           </div>
           <div class="med-card-body">`;
@@ -260,10 +288,13 @@ function renderMedsView(){
     } else {
       for(const vit of medState.vitamins) {
         const usage = getVitaminUsageCount(vit.id);
+        const isPending = pendingMedDeleteId === vit.id;
         h += `<div class="med-item">
           <div class="med-item-head">
             <div class="med-item-title">💊 ${esc(vit.name)}</div>
-            <button class="mini-btn" data-med-del-vit="${vit.id}">🗑</button>
+            <button class="mini-btn" data-med-del-vit="${vit.id}" style="${isPending ? 'background:var(--red); border-color:var(--red); color:#fff;' : ''}">
+              ${isPending ? 'Точно?' : '🗑'}
+            </button>
           </div>
           <div class="med-item-sub">В ${usage} приемах</div>
         </div>`;

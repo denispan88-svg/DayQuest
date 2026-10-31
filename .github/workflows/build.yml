@@ -36,6 +36,7 @@ jobs:
           cp *.js www/ 2>/dev/null || true
           cp *.css www/ 2>/dev/null || true
           cp services/*.js www/services/ 2>/dev/null || true
+          cp -r assets www/assets 2>/dev/null || true
 
       - name: Install dependencies
         run: |

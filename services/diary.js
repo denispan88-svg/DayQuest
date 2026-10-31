@@ -13,6 +13,7 @@ const DIARY_FIELDS = [
 
 let diaryState = null;
 let editingEntryId = null;
+let pendingDeleteId = null; // Для подтверждения удаления без confirm()
 
 function freshDiary(){ return { entries: [] }; }
 
@@ -52,11 +53,26 @@ function getDiaryEntry(id){
   return diaryState.entries.find(e => e.id === id);
 }
 
+// Умное удаление в два клика
 function deleteDiaryEntry(id){
-  if(!confirm('Удалить эту запись? Это нельзя отменить.')) return;
-  diaryState.entries = diaryState.entries.filter(e => e.id !== id);
-  saveDiary();
-  renderServices();
+  if (pendingDeleteId === id) {
+    diaryState.entries = diaryState.entries.filter(e => e.id !== id);
+    saveDiary();
+    pendingDeleteId = null;
+    renderServices();
+    toast('Запись удалена 🗑');
+  } else {
+    pendingDeleteId = id;
+    renderServices();
+    toast('Нажмите еще раз для удаления');
+    
+    setTimeout(() => {
+        if (pendingDeleteId === id) {
+            pendingDeleteId = null;
+            renderServices();
+        }
+    }, 3000);
+  }
 }
 
 function saveDiaryEntryFromForm(){
@@ -124,10 +140,14 @@ function renderDiaryView(){
       const preview = esc(diaryEntryPreview(e));
       const date = formatDiaryDate(e.updatedAt || e.createdAt);
       const filled = diaryFilledCount(e);
+      const isPending = pendingDeleteId === e.id;
+      
       h += `<div class="diary-item" data-diary-open="${e.id}">
         <div class="diary-item-head">
           <div class="diary-item-date">${date} · ${filled}/7</div>
-          <button class="mini-btn" data-diary-del="${e.id}" onclick="event.stopPropagation()">🗑</button>
+          <button class="mini-btn" data-diary-del="${e.id}" style="${isPending ? 'background:var(--red); border-color:var(--red); color:#fff;' : ''}">
+            ${isPending ? 'Точно?' : '🗑'}
+          </button>
         </div>
         <div class="diary-item-preview">${preview}</div>
       </div>`;
